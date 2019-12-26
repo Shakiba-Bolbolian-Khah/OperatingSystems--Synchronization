@@ -28,21 +28,17 @@ acquire(struct spinlock *lk)
   pushcli(); // disable interrupts to avoid deadlock.
 
   if(holding(lk)){
-    // cprintf("%d\n", (mycpu()->proc!= 0));
     if(mycpu()->proc!= 0){
       if(lk->pid != mycpu()->proc->pid){
-        cprintf("here\n");
         panic("acquire");
       }
       else{
-        cprintf("before popcli!\n");
         popcli();
         return;
       }
     }
     else{
-      cprintf("before panic\n");
-      // panic("acquire");
+      panic("acquire");
     }
   }
 

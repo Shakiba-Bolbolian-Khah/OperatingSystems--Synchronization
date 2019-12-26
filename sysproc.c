@@ -89,3 +89,14 @@ sys_uptime(void)
   release(&tickslock);
   return xticks;
 }
+
+int
+sys_testLock(void)
+{
+  for(int i=0; i<5; i++){
+    cprintf("acquire number: %d\n",i);
+    acquire(&tickslock);
+  }
+  release(&tickslock);
+  return 1;
+}
