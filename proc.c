@@ -533,3 +533,33 @@ procdump(void)
     cprintf("\n");
   }
 }
+
+
+struct {
+  struct spinlock lock;
+  int barrierValue;
+  void* chan;
+} Barrier;
+
+
+void
+initBarrier(int numOfProces) {
+  Barrier.barrierValue = numOfProces;  
+}
+
+void
+barrier(void) {
+  acquire(&Barrier.lock);  
+  Barrier.barrierValue = Barrier.barrierValue - 1;
+  
+  if (Barrier.barrierValue == 0) {
+    release(&Barrier.lock);
+    wakeup(&Barrier.chan);
+    return;
+  }
+
+  sleep(&Barrier.chan, &Barrier.lock);
+  release(&Barrier.lock);
+  return;
+
+}

@@ -100,3 +100,23 @@ sys_testLock(void)
   release(&tickslock);
   return 1;
 }
+
+int 
+sys_initBarrier(void)
+{
+  int n;
+
+  if(argint(0, &n) < 0)
+    return -1;
+
+  initBarrier(n);
+  return 1;
+
+}
+
+int
+sys_barrier(void) 
+{
+  barrier();
+  return 1;
+}
